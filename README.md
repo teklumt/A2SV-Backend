@@ -1,4 +1,4 @@
-## Go Lang Back End Tasks for A2SV Internship
+## Go Lang Back End Tasks for A2SV Project Phase
 
 ### Task 1 - Console Based Student Grade Calculator
 
