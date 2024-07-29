@@ -2,10 +2,11 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
+
 func isPalindrome(word string) bool {
+	
 	left, right := 0, len(word)-1
 
 	for left < right {
@@ -16,20 +17,18 @@ func isPalindrome(word string) bool {
 		right--
 	}
 	return true
+	
 }
 
-func main() {
-	title := "Palindrome Check"
-	fmt.Println("\n" + title)
-	fmt.Println(strings.Repeat("-", len(title))) // Underline with dashes
 
+
+func main() {
 	var word string
 	fmt.Print("Enter the string: ")
 	fmt.Scan(&word)
-
 	if isPalindrome(word) {
-		fmt.Printf("\n\"%s\" is a palindrome.\n", word)
+		fmt.Println(word + " is a palindrome.")
 	} else {
-		fmt.Printf("\n\"%s\" is not a palindrome.\n", word)
+		fmt.Println(word + " is not a palindrome.")
 	}
 }
