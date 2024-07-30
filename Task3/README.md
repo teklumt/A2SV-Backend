@@ -24,7 +24,7 @@ This is a simple console-based library management system implemented in Go. The 
 1. Clone the repository:
 
    ```bash
-   git clone
+   git clone https://github.com/teklumt/A2SV-Backend-Tasks-2024/tree/main/Task3
    cd Task3
    ```
 
