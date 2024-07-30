@@ -50,10 +50,10 @@ Upon running the application, you will see the following menu:
 
 ---
 
-- Console-Based Library Management System \*
-
----
-
+```
+*********************************************
+*  Console-Based Library Management System   *
+*********************************************
 1. Add Book
 2. Remove Book
 3. Borrow Book
@@ -61,8 +61,7 @@ Upon running the application, you will see the following menu:
 5. List Available Books
 6. List Borrowed Books
 7. Exit
-   Enter your choice:
-
+Enter your choice:
 ```
 
 ### Menu Options
@@ -83,5 +82,6 @@ Upon running the application, you will see the following menu:
 
 `
 
+```
 
 ```
