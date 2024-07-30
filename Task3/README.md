@@ -51,17 +51,17 @@ Upon running the application, you will see the following menu:
 ---
 
 ```
-               *********************************************
-               *  Console-Based Library Management System   *
-               *********************************************
-               1. Add Book
-               2. Remove Book
-               3. Borrow Book
-               4. Return Book
-               5. List Available Books
-               6. List Borrowed Books
-               7. Exit
-               Enter your choice:
+*********************************************
+*  Console-Based Library Management System   *
+*********************************************
+1. Add Book
+2. Remove Book
+3. Borrow Book
+4. Return Book
+5. List Available Books
+6. List Borrowed Books
+7. Exit
+Enter your choice:
 ```
 
 ### Menu Options
@@ -71,7 +71,36 @@ Upon running the application, you will see the following menu:
 3. **Borrow Book**: Borrows a book from the library. You will be prompted to enter the book ID and member ID.
 4. **Return Book**: Returns a borrowed book to the library. You will be prompted to enter the book ID and member ID.
 5. **List Available Books**: Lists all available books in the library in a tabular format.
+   The output will look like this:
+
+   ```
+   Available Books:
+   ---------------------------------------------------------------
+   | ID   | Title                             | Author             |
+   ---------------------------------------------------------------
+   | 1    | Cutting for Stone                 | Abraham Verghese   |
+   | 2    | The Beautiful Things That Bears   | Dinaw Mengestu     |
+   | 3    | Beneath the Lion's Gaze           | Maaza Mengiste     |
+   ---------------------------------------------------------------
+   ```
+
 6. **List Borrowed Books**: Lists all borrowed books by a member in a tabular format. You will be prompted to enter the member ID.
+
+   The output will look like this:
+
+   ```
+   User ID: 1
+   Borrowed Books:
+   ---------------------------------------------------------------
+   | ID   | Title                             | Author             |
+   ---------------------------------------------------------------
+   | 1    | Cutting for Stone                 | Abraham Verghese   |
+   | 2    | The Beautiful Things That Bears   | Dinaw Mengestu     |
+   | 3    | Beneath the Lion's Gaze           | Maaza Mengiste     |
+   ---------------------------------------------------------------
+
+   ```
+
 7. **Exit**: Exits the application.
 
 ## Code Structure
@@ -81,7 +110,3 @@ Upon running the application, you will see the following menu:
 - **service**: Contains the `Library` service which manages the books and members.
 
 `
-
-```
-
-```

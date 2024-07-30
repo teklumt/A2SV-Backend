@@ -17,10 +17,11 @@ func clearConsole() {
 
 func Run() {
 	library := service.NewLibrary()
-	library.AddBook(model.Book{ID: 1, Title: "1984", Author: "George Orwell", Status: "Available"})
-	library.AddBook(model.Book{ID: 2, Title: "The Hobbit", Author: "J.R.R. Tolkien", Status: "Available"})
-	
-	library.AddMember(model.Member{ID: 1, Name: "Alice"})
+	library.AddBook(model.Book{ID: 1, Title: "Cutting for Stone", Author: "Abraham Verghese", Status: "Available"})
+	library.AddBook(model.Book{ID: 2, Title: "The Beautiful Things That  Bears", Author: "Dinaw Mengestu", Status: "Available"})
+	library.AddBook(model.Book{ID: 3, Title: "Beneath the Lion's Gaze", Author: "Maaza Mengiste", Status: "Available"})
+
+	library.AddMember(model.Member{ID: 1, Name: "Kebede"})
 
 	for {
 		fmt.Println("\n*********************************************")
