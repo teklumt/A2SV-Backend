@@ -1,6 +1,4 @@
-`
-
-# Console-Based Library Management System
+`# Console-Based Library Management System
 
 This is a simple console-based library management system implemented in Go. The system allows you to add, remove, borrow, and return books, as well as list available and borrowed books. The console interface provides an easy way to manage a small library.
 
