@@ -2,6 +2,8 @@
 
 This Task Management REST API, developed using Go and the Gin framework, supports basic CRUD operations for managing tasks. This documentation provides an overview of the API, its endpoints, and how to use it.
 
+🔗 **[API Documentation](https://documenter.getpostman.com/view/32898780/2sA3kd9cJG)**
+
 ## 📁 Folder Structure
 
 ```
