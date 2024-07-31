@@ -26,31 +26,31 @@ task_manager/
 
 ## 💡 Implementation Details
 
-# `main.go`
+`main.go`
 
 Entry point of the application. It sets up the router and starts the server.
 
-# `controllers/controller.go`
+`controllers/controller.go`
 
 Handles incoming HTTP requests and invokes the appropriate service methods.
 
-# `model/task.go`
+`model/task.go`
 
 Defines the data structures used in the application, specifically the `Task` struct.
 
-# `db/storage.go`
+`db/storage.go`
 
 Contains the in-memory database to store tasks.
 
-# `router/router.go`
+`router/router.go`
 
 Sets up the routes and initializes the Gin router.
 
-# `services/service.go`
+`services/service.go`
 
 Contains business logic and data manipulation functions.
 
-# `docs/api_documentation.md`
+`docs/api_documentation.md`
 
 Contains API documentation and other related documentation.
 
