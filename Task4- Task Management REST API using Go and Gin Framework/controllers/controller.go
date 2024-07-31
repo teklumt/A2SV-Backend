@@ -41,7 +41,10 @@ func UpdateSpecificTask(context *gin.Context){
 	var Updated  bool = services.UpdateTask(id , updatedTask)
 	
 	if  Updated{
-		context.IndentedJSON(http.StatusOK, gin.H{"message":"Successfully Updated"})
+		context.IndentedJSON(http.StatusOK, gin.H{
+			"message":"Successfully Updated",
+			"task": updatedTask,	
+	})
 		return
 	}
 	
