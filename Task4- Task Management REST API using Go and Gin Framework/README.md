@@ -1,8 +1,8 @@
-# Task Management REST API
+# 📋 Task Management REST API
 
 This Task Management REST API, developed using Go and the Gin framework, supports basic CRUD operations for managing tasks. This documentation provides an overview of the API, its endpoints, and how to use it.
 
-## Folder Structure
+## 📁 Folder Structure
 
 ```
 task_manager/
@@ -22,39 +22,39 @@ task_manager/
 └── go.mod
 ```
 
-## Implementation Details
+## 💡 Implementation Details
 
-### main.go
+### `main.go`
 
 Entry point of the application. It sets up the router and starts the server.
 
-### controllers/controller.go
+### `controllers/controller.go`
 
 Handles incoming HTTP requests and invokes the appropriate service methods.
 
-### model/task.go
+### `model/task.go`
 
 Defines the data structures used in the application, specifically the `Task` struct.
 
-### db/storage.go
+### `db/storage.go`
 
 Contains the in-memory database to store tasks.
 
-### router/router.go
+### `router/router.go`
 
 Sets up the routes and initializes the Gin router.
 
-### services/service.go
+### `services/service.go`
 
 Contains business logic and data manipulation functions.
 
-### docs/api_documentation.md
+### `docs/api_documentation.md`
 
 Contains API documentation and other related documentation.
 
-## API Endpoints
+## 🌐 API Endpoints
 
-### GET /tasks
+### 📜 GET /tasks
 
 Fetches a list of all tasks.
 
@@ -91,7 +91,7 @@ Fetches a list of all tasks.
 }
 ```
 
-### GET /tasks/:id
+### 🔍 GET /tasks/:id
 
 Fetches the details of a specific task by its ID.
 
@@ -106,7 +106,7 @@ Fetches the details of a specific task by its ID.
 }
 ```
 
-### PUT /tasks/:id
+### ✏️ PUT /tasks/:id
 
 Updates a specific task.
 
@@ -124,11 +124,17 @@ Updates a specific task.
 
 ```json
 {
-  "message": "Successfully Updated"
+  "message": "Successfully Updated",
+  "task": {
+    "id": "1",
+    "title": "Updated Task Title",
+    "description": "Updated Task Description",
+    "status": "Completed"
+  }
 }
 ```
 
-### DELETE /tasks/:id
+### 🗑️ DELETE /tasks/:id
 
 Deletes a specific task.
 
@@ -140,7 +146,7 @@ Deletes a specific task.
 }
 ```
 
-### POST /tasks
+### ➕ POST /tasks
 
 Creates a new task.
 
@@ -168,17 +174,17 @@ Creates a new task.
 }
 ```
 
-## Error Handling
+## ⚠️ Error Handling
 
 - **404 Not Found:** When the specified resource is not found.
 - **400 Bad Request:** When the request payload is invalid.
 - **500 Internal Server Error:** For unexpected server errors.
 
-## Testing
+## 🧪 Testing
 
 Utilize Postman to test each endpoint of the Task Management API. Ensure that the API returns the correct responses for various scenarios.
 
-## Instructions to Run the API
+## 🛠️ Instructions to Run the API
 
 1. Clone the repository.
 2. Navigate to the project directory.
@@ -186,9 +192,9 @@ Utilize Postman to test each endpoint of the Task Management API. Ensure that th
 4. Start the server using `go run main.go`.
 5. Use Postman or curl to interact with the API.
 
-## Example Responses
+## 📄 Example Responses
 
-### GET /tasks
+### 📜 GET /tasks
 
 Response:
 
@@ -223,7 +229,7 @@ Response:
 }
 ```
 
-### GET /tasks/:id
+### 🔍 GET /tasks/:id
 
 Response:
 
@@ -236,7 +242,7 @@ Response:
 }
 ```
 
-### PUT /tasks/:id
+### ✏️ PUT /tasks/:id
 
 Request Body:
 
@@ -252,11 +258,17 @@ Response:
 
 ```json
 {
-  "message": "Successfully Updated"
+  "message": "Successfully Updated",
+  "task": {
+    "id": "1",
+    "title": "Updated Task Title",
+    "description": "Updated Task Description",
+    "status": "Completed"
+  }
 }
 ```
 
-### DELETE /tasks/:id
+### 🗑️ DELETE /tasks/:id
 
 Response:
 
@@ -266,7 +278,7 @@ Response:
 }
 ```
 
-### POST /tasks
+### ➕ POST /tasks
 
 Request Body:
 
@@ -292,6 +304,13 @@ Response:
 }
 ```
 
-## Conclusion
+## 🏁 Conclusion
 
 This Task Management REST API, built using Go and the Gin framework, provides a robust and easy-to-use interface for managing tasks. It includes endpoints for creating, retrieving, updating, and deleting tasks, with in-memory storage and detailed error handling. Use the provided instructions to set up and test the API, and refer to the example responses to understand the expected outputs for each endpoint.
+
+---
+
+## Developed by Teklu Moges
+
+- **GitHub:** [@teklumt](https://github.com/teklumt)
+- **Telegram:** [Tsemadre](https://t.me/Tsemadre)
