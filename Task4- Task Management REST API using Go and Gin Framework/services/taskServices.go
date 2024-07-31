@@ -41,18 +41,18 @@ func DeleteTask(id string) bool {
     return false
 }
 
-func AddTask(task model.Task) bool {
+func AddTask(task model.Task) (bool, string)  {
     if  task.Title == "" || task.Description == "" {
-        return false
+        return false,""
     }
     for _, t := range db.Database {
         if t.Title == task.Title && t.Description == task.Description {
-            return false
+            return false,""
         }
     }
 
 
     task.ID = uuid.New().String() 
     db.Database = append(db.Database, task)
-    return true
+    return true, task.ID
 }

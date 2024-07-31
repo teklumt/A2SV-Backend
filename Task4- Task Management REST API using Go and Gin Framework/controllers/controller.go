@@ -64,8 +64,10 @@ func AddSpecificTask(context *gin.Context) {
         context.IndentedJSON(http.StatusBadRequest, err.Error())
         return
     }
-    added := services.AddTask(newTask)
+    added , newID := services.AddTask(newTask)
+
     if added {
+        newTask.ID = newID
         context.IndentedJSON(http.StatusOK, gin.H{"message": "Successfully Added", "task": newTask})
         return
     }
