@@ -309,8 +309,3 @@ Response:
 This Task Management REST API, built using Go and the Gin framework, provides a robust and easy-to-use interface for managing tasks. It includes endpoints for creating, retrieving, updating, and deleting tasks, with in-memory storage and detailed error handling. Use the provided instructions to set up and test the API, and refer to the example responses to understand the expected outputs for each endpoint.
 
 ---
-
-## Developed by Teklu Moges
-
-- **GitHub:** [@teklumt](https://github.com/teklumt)
-- **Telegram:** [Tsemadre](https://t.me/Tsemadre)
