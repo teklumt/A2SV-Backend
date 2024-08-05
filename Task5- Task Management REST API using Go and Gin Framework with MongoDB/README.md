@@ -1,6 +1,8 @@
+Here's the updated documentation with the changes to the database files:
+
 # 📋 Task Management REST API
 
-This Task Management REST API, developed using Go and the Gin framework, supports basic CRUD operations for managing tasks using mongoDB Database. This documentation provides an overview of the API, its endpoints, and how to use it.
+This Task Management REST API, developed using Go and the Gin framework, supports basic CRUD operations for managing tasks using MongoDB Database. This documentation provides an overview of the API, its endpoints, and how to use it.
 
 🔗 **[API Documentation](https://documenter.getpostman.com/view/32898780/2sA3kd9cJG)**
 
@@ -14,13 +16,15 @@ task_manager/
 ├── model/
 │   └── task.go
 ├── db/
-│   └── storage.go
+│   ├── connectionDB.go
+│   └── dbOperations.go
 ├── router/
 │   └── router.go
 ├── services/
 │   └── service.go
 ├── docs/
 │   └── api_documentation.md
+├── .env
 └── go.mod
 ```
 
@@ -38,9 +42,13 @@ Handles incoming HTTP requests and invokes the appropriate service methods.
 
 Defines the data structures used in the application, specifically the `Task` struct.
 
-`db/storage.go`
+`db/connectionDB.go`
 
-Contains the database connection and operations for MongoDB.
+Contains the database connection details for MongoDB.
+
+`db/dbOperations.go`
+
+Contains the database operations for MongoDB.
 
 `router/router.go`
 
@@ -53,6 +61,10 @@ Contains business logic and data manipulation functions.
 `docs/api_documentation.md`
 
 Contains API documentation and other related documentation.
+
+`.env`
+
+Contains environment variables for configuration.
 
 ## 🌐 API Endpoints
 
@@ -191,7 +203,14 @@ Utilize Postman to test each endpoint of the Task Management API. Ensure that th
 1. Clone the repository.
 2. Navigate to the project directory.
 3. Run `go mod tidy` to install the dependencies.
-4. Set up MongoDB Atlas and configure the connection string in the `db/storage.go` file.
+4. Set up MongoDB Atlas and configure the connection string in the `.env` file.
+
+`.env`
+```env
+LOCAL_SERVER_PORT=:8080
+MONGODB_URL= Your_Connection_String
+```
+
 5. Start the server using `go run main.go`.
 6. Use Postman or curl to interact with the API.
 
