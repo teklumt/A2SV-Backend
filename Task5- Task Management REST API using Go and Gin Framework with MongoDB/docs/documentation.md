@@ -1,1 +1,1 @@
-🔗 **[API Documentation](https://documenter.getpostman.com/view/32898780/2sA3kd9cJG)**
+🔗 **[API Documentation]([https://documenter.getpostman.com/view/32898780/2sA3kd9cJG](https://documenter.getpostman.com/view/32898780/2sA3rxosTC))**
