@@ -1,6 +1,3 @@
-Here's the polished README file with added emojis and a structured format for a better visual appeal:
-
-````markdown
 # 📋 Task Management REST API
 
 ## 🌟 Overview
@@ -19,10 +16,9 @@ Create a `.env` file in the root directory of your project with the following va
 
 ```env
 LOCAL_SERVER_PORT=:8080
-MONGODB_URL=mongodb+srv://username:password@cluster0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+MONGODB_URL=mongodb+srv://<username>:<password>@cluster0.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
 JWT_SECRET=your_jwt_secret
 ```
-````
 
 ## 🚀 Installation
 
