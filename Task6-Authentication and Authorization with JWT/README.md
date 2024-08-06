@@ -4,6 +4,8 @@
 
 This is a Task Management REST API built with Go and the Gin framework. The API includes JWT-based user authentication, allowing users to create accounts, log in, create tasks, and manage them. Only admin users can delete all tasks.
 
+🔗 **[API Documentation](https://documenter.getpostman.com/view/32898780/2sA3rzJC91)**
+
 ## ✨ Features
 
 - 📝 User Registration and Login with JWT authentication
