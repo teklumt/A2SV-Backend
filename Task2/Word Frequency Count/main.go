@@ -1,7 +1,9 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"regexp"
 	"sort"
 	"strings"
@@ -25,10 +27,12 @@ func CountCharacterFrequency(input string) map[rune]int {
 }
 
 func main() {
-	var input string
 
 	fmt.Print("Enter the string: ")
-	fmt.Scanln(&input)
+
+	reader := bufio.NewReader(os.Stdin)
+	input, _ := reader.ReadString('\n')
+	input = strings.TrimSpace(input)
 
 	frequency := CountCharacterFrequency(input)
 
