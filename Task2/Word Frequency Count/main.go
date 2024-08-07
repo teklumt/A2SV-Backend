@@ -2,34 +2,46 @@ package main
 
 import (
 	"fmt"
+	"regexp"
+	"sort"
 	"strings"
 )
 
-func isPalindrome(word string) bool {
-	left, right := 0, len(word)-1
+func CountCharacterFrequency(input string) map[rune]int {
+	frequency := make(map[rune]int)
 
-	for left < right {
-		if word[left] != word[right] {
-			return false
+	reg := regexp.MustCompile(`[\p{P}-[._]]`)
+	input = reg.ReplaceAllString(input, "")
+
+	input = strings.ToUpper(input)
+
+	for _, char := range input {
+		if char != ' ' {
+			frequency[char]++
 		}
-		left++
-		right--
 	}
-	return true
+
+	return frequency
 }
 
 func main() {
-	title := "Palindrome Check"
-	fmt.Println("\n" + title)
-	fmt.Println(strings.Repeat("-", len(title))) // Underline with dashes
+	var input string
 
-	var word string
 	fmt.Print("Enter the string: ")
-	fmt.Scan(&word)
+	fmt.Scanln(&input)
 
-	if isPalindrome(word) {
-		fmt.Printf("\n\"%s\" is a palindrome.\n", word)
-	} else {
-		fmt.Printf("\n\"%s\" is not a palindrome.\n", word)
+	frequency := CountCharacterFrequency(input)
+
+	var keys []rune
+	for k := range frequency {
+		keys = append(keys, k)
+	}
+	sort.Slice(keys, func(i, j int) bool {
+		return keys[i] < keys[j]
+	})
+
+	fmt.Println("Character frequencies:")
+	for _, char := range keys {
+		fmt.Printf("%c: %d\n", char, frequency[char])
 	}
 }
