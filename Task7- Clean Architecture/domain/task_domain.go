@@ -19,11 +19,4 @@ type TaskRepository interface {
 	UpdateTask(id string, task Task) (Task, error)
 	
 
-
-	// GetMyTasks(username string) (Task, error)
-	// LoginUser(username string, password string) (User, error)
-	// GetAllUsers() ([]User, error)
-	// GetUserByID(id string) (User, error)
-	// GetMyProfile(username string) (User, error)
-	// DeleteUserID(username string) (User, error)
 }
