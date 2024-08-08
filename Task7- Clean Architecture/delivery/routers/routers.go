@@ -8,11 +8,13 @@ import (
 func SetupRouter() *gin.Engine {
     router := gin.Default()
 
+    // user routes
     SetupUserRegisterRoutes(router)
-    // SetupTaskRoutes(router)
     SetupUserLoginRoutes(router)
+    SetupUserOperationRoutes(router)
 
-
+    // task routes
+    SetupTaskRoutes(router)
     return router
 }
 

@@ -14,7 +14,7 @@ func SetupUserRegisterRoutes(router *gin.Engine) {
     userUsecase := usecase.NewUserUsecase(userRepo)
     userController := controllers.NewUserController(userUsecase)
 
-    userRoutes := router.Group("/users")
+    userRoutes := router.Group("/auth")
     {
         userRoutes.POST("/register", userController.RegisterUser)
     }

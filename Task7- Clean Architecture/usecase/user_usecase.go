@@ -28,3 +28,23 @@ func (uc *UserUsecase) LoginUser(username string, password string) (domain.User,
 	user, err := uc.UserRepo.LoginUser(username, password)
 	return user, err
 }
+
+func (uc *UserUsecase) GetAllUsers() ([]domain.User, error) {
+	users, err := uc.UserRepo.GetAllUsers()
+	return users, err
+}
+
+func (uc *UserUsecase) DeleteUserID(id string) (domain.User, error) {
+	user, err := uc.UserRepo.DeleteUserID(id)
+	return user, err
+}
+
+func (uc *UserUsecase) GetUserByID(id string) (domain.User, error) {
+	user, err := uc.UserRepo.GetUserByID(id)
+	return user, err
+}
+
+func (uc *UserUsecase) GetMyProfile(username string) (domain.User, error) {
+	user, err := uc.UserRepo.GetMyProfile(username)
+	return user, err
+}

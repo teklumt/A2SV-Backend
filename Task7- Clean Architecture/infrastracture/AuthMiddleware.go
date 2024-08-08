@@ -56,7 +56,11 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
-		c.Set("user", claims)
+		// c.Set("user", claims)
+		c.Set("user_id", claims["user_id"])
+		c.Set("username", claims["username"])
+		c.Set ("role", claims["role"])
+
 		// c.Set("Roles", claims["role"])
 		c.Next()
 	}
@@ -67,33 +71,33 @@ func AuthMiddleware() gin.HandlerFunc {
 
 
 
-func RoleMiddleware() gin.HandlerFunc {
+func RoleMiddleware(Role_ string) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userClaims, exists := c.Get("user")
-		// fmt.Println(userClaims)
+		// userClaims, exists := c.Get("user")
+		// // fmt.Println(userClaims)
 
 
-		if !exists {
-			c.IndentedJSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
-			c.Abort()
-			return
-		}
+		// if !exists {
+		// 	c.IndentedJSON(http.StatusUnauthorized, gin.H{"error": "User not found"})
+		// 	c.Abort()
+		// 	return
+		// }
 
-		user, ok := userClaims.(jwt.MapClaims)
-		if !ok {
-			c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse user claims"})
-			c.Abort()
-			return
-		}
+		// user, ok := userClaims.(jwt.MapClaims)
+		// if !ok {
+		// 	c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "Failed to parse user claims"})
+		// 	c.Abort()
+		// 	return
+		// }
 
-		role, ok := user["role"].(string)
-		if !ok || role == "" {
+		role:= c.GetString("role")
+		if  role == "" {
 			c.IndentedJSON(http.StatusInternalServerError, gin.H{"error": "Role not found in claims"})
 			c.Abort()
 			return
 		}
 
-		if role != "admin" {
+		if role != Role_ {
 			c.IndentedJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized access"})
 			c.Abort()
 			return

@@ -63,23 +63,20 @@ func DeleteTask(id string) bool {
 }
 
 func AddTask(task model.Task, userName string) (bool, string) {
-    // Validate task fields
     if task.Title == "" || task.Description == "" {
         return false, ""
     }
 
-    // Check if the task already exists (by ID)
     exist, err := db.GetTaskByID(task.ID)
     if err != nil || exist != nil {
         fmt.Println("Task already exists")
-        // return false, ""
+      
     }
 
-    // Generate a new UUID for the task
+    
     task.ID = uuid.New().String()
     task.CreaterID = userName
-    
-    // Create the task in the database
+  
     _, err = db.CreateTask(task)
     if err != nil {
         fmt.Println("Error creating task:", err)

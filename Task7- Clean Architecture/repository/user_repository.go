@@ -4,6 +4,8 @@ import (
 	"clean_architecture/domain"
 	"context"
 
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -29,55 +31,56 @@ func (ur *UserRepositoryImpl) LoginUser(username string, password string) (domai
     return user, err
 }
 
+func (ur *UserRepositoryImpl) GetAllUsers() ([]domain.User, error) {
+    var users []domain.User
+    cursor, err := ur.collection.Find(context.Background(), map[string]string{})
+    if err != nil {
+        return nil, err
+    }
+    if err = cursor.All(context.Background(), &users); err != nil {
+        return nil, err
+    }
+    return users, nil
+}
+
+// DeleteUserID
+func (ur *UserRepositoryImpl) DeleteUserID(id string) (domain.User, error) {
+    var user domain.User
+    // chaining 
+    newID, err := primitive.ObjectIDFromHex(id)
+    if err != nil {
+        return domain.User{}, err
+    }
+    err = ur.collection.FindOneAndDelete(context.Background(), bson.M{"_id":newID}).Decode(&user)
+    return user, err
+}
 
 
-
-// type userRepository struct {
-// 	database   mongo.Database
-// 	collection string
-// }
-
-// func NewUserRepository(db mongo.Database, collection string) domain.UserRepository {
-// 	return &userRepository{
-// 		database:   db,
-// 		collection: collection,
-// 	}
-// }
-
-// func (ur *userRepository) Create(c context.Context, user *domain.User) error {
-// 	collection := ur.database.Collection(ur.collection)
-
-// 	_, err := collection.InsertOne(c, user)
-
-// 	return err
-// }
+func (ur *UserRepositoryImpl) GetUserByID(id string) (domain.User, error) {
+    var user domain.User
+    newID, err := primitive.ObjectIDFromHex(id)
+    if err != nil {
+        return domain.User{}, err
+    }
+    err = ur.collection.FindOne(context.Background(), bson.M{"_id": newID}).Decode(&user)
+    return user, err
+}
 
 
+func (ur *UserRepositoryImpl) GetMyProfile(username string) (domain.User, error) {
+    var user domain.User
+    err := ur.collection.FindOne(context.Background(), map[string]string{"username": username}).Decode(&user)
+    return user, err
+}
+
+func (ur *UserRepositoryImpl) UpdateUser(id string, user domain.User) (domain.User, error) {
+    var updatedUser domain.User
+    newID, err := primitive.ObjectIDFromHex(id)
+    if err != nil {
+        return domain.User{}, err
+    }
+    err = ur.collection.FindOneAndUpdate(context.Background(), bson.M{"_id": newID}, bson.M{"$set": user}).Decode(&updatedUser)
+    return updatedUser, err
+}
 
 
-
-
-
-
-
-
-
-
-
-// type UserRepositoryImpl struct {
-// 	users 
-// }
-
-// func NewUserRepositoryImpl() domain.UserRepository {
-
-// 	return &UserRepositoryImpl{users: make(map[string]domain.User)}
-// }
-
-// func (repo *UserRepositoryImpl) CreateUser(user domain.User) (domain.User, error) {
-// 	if _, exists := repo.users[user.Username]; exists {
-// 		return domain.User{}, errors.New("user already exists")
-// 	}
-// 	user.Role = "user"
-// 	repo.users[user.Username] = user
-// 	return user, nil
-// }
