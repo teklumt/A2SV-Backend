@@ -1,4 +1,4 @@
-# 🏗️ Clean Architecture Backend Application
+# 🏗️ A Clean Architecture RESTful API with a MongoDB Database and JWT User Authentication
 
 ![Clean Architecture](https://miro.medium.com/v2/resize:fit:1400/format:webp/1*rCsKNokEGqC2wO3R0ZX3YQ.jpeg)
 
