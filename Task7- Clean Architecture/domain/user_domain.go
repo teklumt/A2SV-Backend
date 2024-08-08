@@ -17,6 +17,7 @@ type User struct {
 
 type UserRepository interface {
 	CreateUser(user User) (User, error)
+	LoginUser(username string, password string) (User, error)
 	// GetUserByEmail(email string) (User, error)
 	// GetUserByID(id int) (User, error)
 	// DeleteUser(id int) error

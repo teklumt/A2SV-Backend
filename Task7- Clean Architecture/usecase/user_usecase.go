@@ -20,3 +20,11 @@ func (uc *UserUsecase) RegisterUser(user domain.User) error {
 	_, err := uc.UserRepo.CreateUser(user)
 	return err
 }
+
+func (uc *UserUsecase) LoginUser(username string, password string) (domain.User, error) {
+	if username == "" || password == "" {
+		return domain.User{}, errors.New("missing required fields")
+	}
+	user, err := uc.UserRepo.LoginUser(username, password)
+	return user, err
+}

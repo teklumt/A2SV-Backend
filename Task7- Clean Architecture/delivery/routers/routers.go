@@ -10,6 +10,7 @@ func SetupRouter() *gin.Engine {
 
     SetupUserRegisterRoutes(router)
     // SetupTaskRoutes(router)
+    SetupUserLoginRoutes(router)
 
 
     return router

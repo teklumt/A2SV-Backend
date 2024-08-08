@@ -23,6 +23,12 @@ func (ur *UserRepositoryImpl) CreateUser(user domain.User) (domain.User, error) 
     return user, err
 }
 
+func (ur *UserRepositoryImpl) LoginUser(username string, password string) (domain.User, error) {
+    var user domain.User
+    err := ur.collection.FindOne(context.Background(), map[string]string{"username": username, "password": password}).Decode(&user)
+    return user, err
+}
+
 
 
 

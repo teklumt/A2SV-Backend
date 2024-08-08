@@ -30,3 +30,19 @@ func (uc *UserController) RegisterUser(c *gin.Context) {
 
     c.JSON(http.StatusOK, gin.H{"message": "user registered successfully"})
 }
+
+func (uc *UserController) LoginUser(c *gin.Context) {
+    var user domain.User
+    if err := c.ShouldBindJSON(&user); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    user, err := uc.UserUsecase.LoginUser(user.Username, user.Password)
+    if err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
+
+    c.JSON(http.StatusOK, gin.H{"message": "user logged in successfully", "user": user})
+}

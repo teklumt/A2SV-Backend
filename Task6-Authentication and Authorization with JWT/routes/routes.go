@@ -28,6 +28,8 @@ func IntializeRoutes() {
 		protected.DELETE("tasks/:id", controllers.DeleteSpecificTask)
 		protected.POST("tasks", controllers.AddSpecificTask)
 
+		protected.GET("users",middleware.AuthMiddleware() ,controllers.GetAllUsers)
+
 	}
 
 
