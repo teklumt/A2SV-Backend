@@ -11,3 +11,5 @@
 `Task 5 - 📦 Task Management REST API with MongoDB`
 
 `Task 6 - 🔐 Authentication and Authorization with JWT`
+
+`Task 7 - 📦 Clean Architecture `
