@@ -77,9 +77,13 @@ func (ur *UserRepositoryImpl) UpdateUser(id string, user domain.User) (domain.Us
     var updatedUser domain.User
     newID, err := primitive.ObjectIDFromHex(id)
     if err != nil {
+        
         return domain.User{}, err
     }
+    
     err = ur.collection.FindOneAndUpdate(context.Background(), bson.M{"_id": newID}, bson.M{"$set": user}).Decode(&updatedUser)
+    
+    
     return updatedUser, err
 }
 

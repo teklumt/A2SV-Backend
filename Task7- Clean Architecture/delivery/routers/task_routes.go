@@ -17,11 +17,13 @@ func SetupTaskRoutes(router *gin.Engine) {
 	taskRoutes := router.Group("/tasks")
 	taskRoutes.Use(infrastracture.AuthMiddleware())
 	{
+
 		taskRoutes.POST("/", taskController.CreateTask)
 		taskRoutes.GET("/",infrastracture.RoleMiddleware("admin") , taskController.GetTasks)
 		taskRoutes.GET("/:id", taskController.GetTaskByID)
 		taskRoutes.GET("/me", taskController.GetMyTasks)
 		taskRoutes.DELETE("/:id", taskController.DeleteTask)
 		taskRoutes.PUT("/:id", taskController.UpdateTask)
+		
 	}
 }

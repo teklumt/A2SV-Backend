@@ -41,10 +41,13 @@ func (uc *UserUsecase) DeleteUserID(id string) (domain.User, error) {
 
 func (uc *UserUsecase) GetUserByID(id string) (domain.User, error) {
 	user, err := uc.UserRepo.GetUserByID(id)
+	
 	return user, err
 }
 
 func (uc *UserUsecase) GetMyProfile(username string) (domain.User, error) {
 	user, err := uc.UserRepo.GetMyProfile(username)
+
+
 	return user, err
 }
