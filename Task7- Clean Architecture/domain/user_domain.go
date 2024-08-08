@@ -16,10 +16,7 @@ type UserRepository interface {
 	GetAllUsers() ([]User, error)	
 	GetUserByID(id string) (User, error)
 	GetMyProfile(username string) (User, error)
-	DeleteUserID(username string) (User, error)
-
-
-	
+	DeleteUserID(username string) (User, error)	
 }
 
 
