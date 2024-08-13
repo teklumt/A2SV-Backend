@@ -5,40 +5,42 @@ import (
 	"clean_architecture_Testing/mocks"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func TestCreateTask(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
+type TaskUsecaseSuite struct {
+	suite.Suite
+	mockRepo *mocks.TaskRepository
+	uc       *TaskUsecase
+}
 
+func (suite *TaskUsecaseSuite) SetupTest() {
+	suite.mockRepo = new(mocks.TaskRepository)
+	suite.uc = NewTaskUsecase(suite.mockRepo)
+}
+
+func (suite *TaskUsecaseSuite) TestCreateTask() {
 	task := domain.Task{Title: "Test Task", Description: "Test Description"}
 
-	mockRepo.On("CreateTask", task).Return(task, nil)
+	suite.mockRepo.On("CreateTask", task).Return(task, nil)
 
-	err := uc.CreateTask(task)
+	err := suite.uc.CreateTask(task)
 
-	assert.NoError(t, err)
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-func TestCreateTaskWithMissingFields(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
-
+func (suite *TaskUsecaseSuite) TestCreateTaskWithMissingFields() {
 	task := domain.Task{Title: "", Description: ""}
 
-	err := uc.CreateTask(task)
+	err := suite.uc.CreateTask(task)
 
-	assert.EqualError(t, err, "missing required fields")
-	mockRepo.AssertExpectations(t)
+	suite.EqualError(err, "missing required fields")
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-func TestGetTasks(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
-
+func (suite *TaskUsecaseSuite) TestGetTasks() {
 	objectID1, _ := primitive.ObjectIDFromHex("66b4da6f8d141a21dcc920bd")
 	objectID2, _ := primitive.ObjectIDFromHex("76b4da6f8d141a21dcc920bd")
 
@@ -47,75 +49,61 @@ func TestGetTasks(t *testing.T) {
 		{ID: objectID2, Title: "Task 2", Description: "Description 2"},
 	}
 
+	suite.mockRepo.On("GetTasks").Return(tasks, nil)
 
-	mockRepo.On("GetTasks").Return(tasks, nil)
+	result, err := suite.uc.GetTasks()
 
-
-	result, err := uc.GetTasks()
-
-
-	assert.NoError(t, err)
-	assert.ElementsMatch(t, tasks, result) 
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.ElementsMatch(tasks, result)
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-func TestGetTaskByID(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
-
+func (suite *TaskUsecaseSuite) TestGetTaskByID() {
 	objectID, _ := primitive.ObjectIDFromHex("66b4da6f8d141a21dcc920bd")
 	task := domain.Task{ID: objectID, Title: "Task 1", Description: "Description 1"}
 
+	suite.mockRepo.On("GetTaskByID", objectID.Hex(), "creator", "role").Return(task, nil)
 
-	mockRepo.On("GetTaskByID", objectID.Hex(), "creator", "role").Return(task, nil)
+	result, err := suite.uc.GetTaskByID(objectID.Hex(), "creator", "role")
 
-	
-	result, err := uc.GetTaskByID(objectID.Hex(), "creator", "role")
-
-
-	assert.NoError(t, err)
-	assert.Equal(t, task, result)
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.Equal(task, result)
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-func TestUpdateTask(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
-
+func (suite *TaskUsecaseSuite) TestUpdateTask() {
 	objectID, _ := primitive.ObjectIDFromHex("66b4da6f8d141a21dcc920bd")
 	task := domain.Task{Title: "Updated Task", Description: "Updated Description"}
 
-	mockRepo.On("UpdateTask", objectID.Hex(), task).Return(task, nil)
+	suite.mockRepo.On("UpdateTask", objectID.Hex(), task).Return(task, nil)
 
-	err := uc.UpdateTask(objectID.Hex(), task)
+	err := suite.uc.UpdateTask(objectID.Hex(), task)
 
-	assert.NoError(t, err)
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-func TestUpdateTaskWithMissingFields(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
-
+func (suite *TaskUsecaseSuite) TestUpdateTaskWithMissingFields() {
 	objectID, _ := primitive.ObjectIDFromHex("66b4da6f8d141a21dcc920bd")
 	task := domain.Task{Title: "", Description: ""}
 
-	err := uc.UpdateTask(objectID.Hex(), task)
+	err := suite.uc.UpdateTask(objectID.Hex(), task)
 
-	assert.EqualError(t, err, "missing required fields")
-	mockRepo.AssertExpectations(t)
+	suite.EqualError(err, "missing required fields")
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-func TestDeleteTask(t *testing.T) {
-	mockRepo := new(mocks.TaskRepository)
-	uc := NewTaskUsecase(mockRepo)
-
+func (suite *TaskUsecaseSuite) TestDeleteTask() {
 	objectID, _ := primitive.ObjectIDFromHex("66b4da6f8d141a21dcc920bd")
 
-	mockRepo.On("DeleteTask", objectID.Hex()).Return(domain.Task{}, nil)
+	suite.mockRepo.On("DeleteTask", objectID.Hex()).Return(domain.Task{}, nil)
 
-	err := uc.DeleteTask(objectID.Hex())
+	err := suite.uc.DeleteTask(objectID.Hex())
 
-	assert.NoError(t, err)
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.mockRepo.AssertExpectations(suite.T())
+}
+
+func TestTaskUsecaseSuite(t *testing.T) {
+	suite.Run(t, new(TaskUsecaseSuite))
 }

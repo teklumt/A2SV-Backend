@@ -90,11 +90,9 @@ func TestGetTasks(t *testing.T) {
 
 
 func TestGetTaskByID(t *testing.T) {
-    // Create a mock usecase
     mockUsecase := new(mocks.TaskUsecase)
     taskController := NewTaskController(mockUsecase)
 
-    // Define the task to return
     taskID := primitive.NewObjectID().Hex()
     taskIDObj, err := primitive.ObjectIDFromHex(taskID)
     if err != nil {
@@ -109,32 +107,24 @@ func TestGetTaskByID(t *testing.T) {
         CreaterID:   "user1",
     }
 
-    // Setup the mock expectation
     mockUsecase.On("GetTaskByID", taskID, "user1", "user").Return(task, nil)
 
-    // Create a router and register the controller
     router := gin.Default()
     router.GET("/tasks/:id", func(c *gin.Context) {
-        // Simulate setting context values
         c.Set("username", "user1")
         c.Set("role", "user")
         taskController.GetTaskByID(c)
     })
 
-    // Create a request
     req, _ := http.NewRequest("GET", "/tasks/"+taskID, nil)
     rr := httptest.NewRecorder()
 
-    // Serve the HTTP request
     router.ServeHTTP(rr, req)
 
-    // Assert the response
     assert.Equal(t, http.StatusOK, rr.Code)
-    // Adjust JSON structure if necessary
     expected := `{"task": {"_id":"` + taskID + `", "title":"Test Task", "description":"Test Description", "status":"Pending", "creater_id":"user1"}}`
     assert.JSONEq(t, expected, rr.Body.String())
 
-    // Assert that the mock expectations were met
     mockUsecase.AssertExpectations(t)
 }
 
@@ -144,7 +134,6 @@ func TestDeleteTask(t *testing.T) {
 	mockUsecase := new(mocks.TaskUsecase)
     taskController := NewTaskController(mockUsecase)
 
-    // Define the task to return
     taskID := primitive.NewObjectID().Hex()
     taskIDObj, err := primitive.ObjectIDFromHex(taskID)
     if err != nil {
@@ -163,7 +152,6 @@ func TestDeleteTask(t *testing.T) {
 
 	router := gin.Default()
 	router.DELETE("/tasks/:id", func(c *gin.Context) {
-		// Simulate setting context values
 		c.Set("username", "user1")
 		c.Set("role", "user")
 		taskController.DeleteTask(c)
@@ -184,7 +172,6 @@ func TestUpdateTask(t *testing.T) {
 	mockUsecase := new(mocks.TaskUsecase)
     taskController := NewTaskController(mockUsecase)
 
-    // Define the task to return
     taskID := primitive.NewObjectID().Hex()
     taskIDObj, err := primitive.ObjectIDFromHex(taskID)
     if err != nil {
@@ -198,28 +185,23 @@ func TestUpdateTask(t *testing.T) {
 		CreaterID:   "user1",
 	}
 
-	// mockUsecase.On("GetTaskByID", taskID, "user1", "user").	Return(task, nil)
 	mockUsecase.On("UpdateTask", taskID, task).Return(nil)
 	
 	router := gin.Default()
 	router.PUT("/tasks/:id", func(c *gin.Context) {
-		// Simulate setting context values
 		c.Set("username", "user1")
 		c.Set("role", "user")
 		taskController.UpdateTask(c)
 	})
 
-	// Create a request with the context values
 	jsonData, _ := json.Marshal(task)
 	req, _ := http.NewRequest("PUT", "/tasks/"+taskID, bytes.NewBuffer(jsonData))
 	req.Header.Set("Content-Type", "application/json")
-	req.Header.Set("username", "user1") // This should match the expected username in the mock
+	req.Header.Set("username", "user1")
 	rr := httptest.NewRecorder()
 
-	// Serve the HTTP request
 	router.ServeHTTP(rr, req)
 
-	// Assert the response
 
 	assert.Equal(t, http.StatusOK, rr.Code)
 	assert.JSONEq(t, `{"message":"task updated successfully"}`, rr.Body.String())

@@ -5,96 +5,40 @@ import (
 	"clean_architecture_Testing/mocks"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/suite"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-func TestCreateUser(t *testing.T){
-	mockCollaction := new(mocks.UserRepository)
-
-	user := domain.User{
-		Username:"Teklu Moges",
-		Password:"Teklumo" ,
-	}
-
-	mockCollaction.On("CreateUser", user).Return(user, nil)
-
-	result, err := mockCollaction.CreateUser(user)
-	assert.NoError(t, err)
-	assert.Equal(t, user.Username, result.Username)
-	assert.Equal(t, user.Password, result.Password)
-
-	mockCollaction.AssertExpectations(t) 
-
+type UserRepositorySuite struct {
+	suite.Suite
+	mockRepo *mocks.UserRepository
 }
 
+func (suite *UserRepositorySuite) SetupTest() {
+	suite.mockRepo = new(mocks.UserRepository)
+}
 
-func TestDeleteUserID(t *testing.T){
-	mockCollaction := new(mocks.UserRepository)
-	userID := primitive.NewObjectID().Hex()
-	userObjId, err := primitive.ObjectIDFromHex(userID)
-	if err != nil{
-		t.Errorf("Error converting task ID: %v", err)
-		return 
-	}
+func (suite *UserRepositorySuite) TestCreateUser() {
 	user := domain.User{
-		ID:		userObjId,
 		Username: "Teklu Moges",
-		Password: "teklumo",
+		Password: "Teklumo",
 	}
 
-	mockCollaction.On("DeleteUserID", userID).Return(user, nil)
-	result, err := mockCollaction.DeleteUserID(userID)
+	suite.mockRepo.On("CreateUser", user).Return(user, nil)
 
-	assert.NoError(t, err)
-	assert.Equal(t, user, result)
-	mockCollaction.AssertExpectations(t)
+	result, err := suite.mockRepo.CreateUser(user)
+	suite.NoError(err)
+	suite.Equal(user.Username, result.Username)
+	suite.Equal(user.Password, result.Password)
 
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
-
-func TestGetAllUsers(t *testing.T) {
-	mockRepo := new(mocks.UserRepository)
-
-	users := []domain.User{
-		{Username: "Teklu Moges", Password: "teklumo"},
-		{Username: "Yehone sew", Password: "yehonesew"},
-	}
-
-	mockRepo.On("GetAllUsers").Return(users, nil)
-
-	result, err := mockRepo.GetAllUsers()
-
-	assert.NoError(t, err)
-	assert.ElementsMatch(t, users, result) 
-	mockRepo.AssertExpectations(t)
-}
-
-
-func TestGetMyProfile(t *testing.T) {
-	mockRepo := new(mocks.UserRepository)
-	username := "Teklu Moges"
-	user := domain.User{
-		Username: username,
-		Password: "teklumo",
-	}
-
-	mockRepo.On("GetMyProfile", username).Return(user, nil)
-
-	result, err := mockRepo.GetMyProfile(username)
-
-	assert.NoError(t, err)
-	assert.Equal(t, user, result)
-	mockRepo.AssertExpectations(t)
-}
-
-
-func TestGetUserByID(t *testing.T) {
-	mockRepo := new(mocks.UserRepository)
+func (suite *UserRepositorySuite) TestDeleteUserID() {
 	userID := primitive.NewObjectID().Hex()
 	userObjId, err := primitive.ObjectIDFromHex(userID)
 	if err != nil {
-		t.Errorf("Error converting user ID: %v", err)
+		suite.T().Errorf("Error converting user ID: %v", err)
 		return
 	}
 	user := domain.User{
@@ -103,18 +47,68 @@ func TestGetUserByID(t *testing.T) {
 		Password: "teklumo",
 	}
 
-	mockRepo.On("GetUserByID", userID).Return(user, nil)
+	suite.mockRepo.On("DeleteUserID", userID).Return(user, nil)
+	result, err := suite.mockRepo.DeleteUserID(userID)
 
-	result, err := mockRepo.GetUserByID(userID)
-
-	assert.NoError(t, err)
-	assert.Equal(t, user, result)
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.Equal(user, result)
+	suite.mockRepo.AssertExpectations(suite.T())
 }
 
+func (suite *UserRepositorySuite) TestGetAllUsers() {
+	users := []domain.User{
+		{Username: "Teklu Moges", Password: "teklumo"},
+		{Username: "Yehone sew", Password: "yehonesew"},
+	}
 
-func TestLoginUser(t *testing.T) {
-	mockRepo := new(mocks.UserRepository)
+	suite.mockRepo.On("GetAllUsers").Return(users, nil)
+
+	result, err := suite.mockRepo.GetAllUsers()
+
+	suite.NoError(err)
+	suite.ElementsMatch(users, result)
+	suite.mockRepo.AssertExpectations(suite.T())
+}
+
+func (suite *UserRepositorySuite) TestGetMyProfile() {
+	username := "Teklu Moges"
+	user := domain.User{
+		Username: username,
+		Password: "teklumo",
+	}
+
+	suite.mockRepo.On("GetMyProfile", username).Return(user, nil)
+
+	result, err := suite.mockRepo.GetMyProfile(username)
+
+	suite.NoError(err)
+	suite.Equal(user, result)
+	suite.mockRepo.AssertExpectations(suite.T())
+}
+
+func (suite *UserRepositorySuite) TestGetUserByID() {
+	userID := primitive.NewObjectID().Hex()
+	userObjId, err := primitive.ObjectIDFromHex(userID)
+	if err != nil {
+		suite.T().Errorf("Error converting user ID: %v", err)
+		return
+	}
+	user := domain.User{
+		ID:       userObjId,
+		Username: "Teklu Moges",
+		Password: "teklumo",
+	}
+
+	suite.mockRepo.On("GetUserByID", userID).Return(user, nil)
+
+	result, err := suite.mockRepo.GetUserByID(userID)
+
+	suite.NoError(err)
+	suite.Equal(user, result)
+	suite.mockRepo.AssertExpectations(suite.T())
+}
+
+func (suite *UserRepositorySuite) TestLoginUser() {
 	username := "Teklu Moges"
 	password := "teklumo"
 	user := domain.User{
@@ -122,11 +116,15 @@ func TestLoginUser(t *testing.T) {
 		Password: password,
 	}
 
-	mockRepo.On("LoginUser", username, password).Return(user, nil)
+	suite.mockRepo.On("LoginUser", username, password).Return(user, nil)
 
-	result, err := mockRepo.LoginUser(username, password)
+	result, err := suite.mockRepo.LoginUser(username, password)
 
-	assert.NoError(t, err)
-	assert.Equal(t, user, result)
-	mockRepo.AssertExpectations(t)
+	suite.NoError(err)
+	suite.Equal(user, result)
+	suite.mockRepo.AssertExpectations(suite.T())
+}
+
+func TestUserRepositorySuite(t *testing.T) {
+	suite.Run(t, new(UserRepositorySuite))
 }

@@ -14,3 +14,10 @@ type JwtCustomClaims struct {
 }
 
 
+
+type JwtCustomClaimsInterface interface {
+	Authorized() bool
+	UserID() string
+	Role() string
+	Username() string
+}
