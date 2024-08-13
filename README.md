@@ -13,3 +13,5 @@
 `Task 6 - 🔐 Authentication and Authorization with JWT`
 
 `Task 7 - 🏗️ A Clean Architecture RESTful API with a MongoDB Database and JWT User Authentication`
+
+`Task 8: 🧪 Teasted Clean Architecture RESTful API with a MongoDB Database and JWT User Authentication`
