@@ -3,13 +3,14 @@ package infrastracture
 import (
 	"clean_architecture_Testing/config"
 	"clean_architecture_Testing/domain"
+	"fmt"
 
 	"github.com/golang-jwt/jwt"
 )
 
 
 func GenerateToken(user domain.User) (string, error) {
-	jwtSecret := []byte(config.EnvConfigs.JwtSecret)
+	var JwtSecret = []byte(config.EnvConfigs.JwtSecret)
 
 
 	claims := domain.JwtCustomClaims{
@@ -19,9 +20,11 @@ func GenerateToken(user domain.User) (string, error) {
 		Username:   user.Username,
 	}
 
+	fmt.Println(JwtSecret, "GErator ******************")
+
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString(jwtSecret)
+	return token.SignedString(JwtSecret)
 }
 
 

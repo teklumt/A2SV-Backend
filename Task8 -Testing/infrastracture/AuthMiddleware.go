@@ -16,7 +16,10 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	
 	return func(c *gin.Context) {
-		// fmt.Println(config.EnvConfigs.JwtSecret, "secrate teklu moges*********************")
+		var JwtSecret = []byte(config.EnvConfigs.JwtSecret)
+
+
+
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" {
 			c.JSON(401, gin.H{"error": "Authorization header is required"})
@@ -35,7 +38,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
 				return nil, fmt.Errorf("Unexpected signing method: %v", token.Header["alg"])
 			}
-			return config.EnvConfigs.JwtSecret, nil
+			return JwtSecret, nil
 		})
 
 		if err != nil {

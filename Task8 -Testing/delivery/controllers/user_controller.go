@@ -3,7 +3,6 @@ package controllers
 import (
 	"clean_architecture_Testing/domain"
 	"clean_architecture_Testing/infrastracture"
-	"clean_architecture_Testing/usecase"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -11,10 +10,10 @@ import (
 )
 
 type UserController struct {
-    UserUsecase *usecase.UserUsecase
+    UserUsecase domain.UserUsecase
 }
 
-func NewUserController(userUsecase *usecase.UserUsecase) *UserController {
+func NewUserController(userUsecase domain.UserUsecase) *UserController {
     return &UserController{UserUsecase: userUsecase}
 }
 

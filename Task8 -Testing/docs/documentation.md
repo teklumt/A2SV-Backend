@@ -1,4 +1,4 @@
-# 🏗️ A Clean Architecture RESTful API with a MongoDB Database and JWT User Authentication
+# 🧪 Teasted Clean Architecture RESTful API with a MongoDB Database and JWT User Authentication
 
 This repository contains a backend RESTful API built using the principles of Clean Architecture in Go with the Gin web framework and MongoDB as the database.
 

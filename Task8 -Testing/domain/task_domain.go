@@ -29,4 +29,14 @@ type TaskUsecase interface {
 	DeleteTask(id string) error
 	UpdateTask(id string, task Task) error
 }
-	
+
+type TaskController interface {
+	CreateTask(task Task) error
+	GetTasks() ([]Task, error)
+	GetTaskByID(id string, creater string, Role_ string) (Task, error)
+	GetMyTasks(username string) ([]Task, error)
+	DeleteTask(id string) error
+	UpdateTask(id string, task Task) error
+}
+
+

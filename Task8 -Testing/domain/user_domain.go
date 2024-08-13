@@ -27,3 +27,12 @@ type UserUsecase interface {
 	GetMyProfile(username string) (User, error)
 	DeleteUserID(username string) (User, error)
 }
+
+type UserController interface {
+	RegisterUser(user User) error
+	LoginUser(username string, password string) (User, error)
+	GetAllUsers() ([]User, error)
+	GetUserByID(id string) (User, error)
+	GetMyProfile(username string) (User, error)
+	DeleteUserID(username string) (User, error)
+}

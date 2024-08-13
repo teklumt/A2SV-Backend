@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"clean_architecture_Testing/domain"
-	"clean_architecture_Testing/usecase"
 	"fmt"
 	"net/http"
 
@@ -10,30 +9,46 @@ import (
 )
 
 type TaskController struct {
-	TaskUsecase *usecase.TaskUsecase
+	TaskUsecase domain.TaskUsecase
 }
 
-func NewTaskController(taskUsecase *usecase.TaskUsecase) *TaskController {
+func NewTaskController(taskUsecase domain.TaskUsecase) *TaskController {
 	return &TaskController{TaskUsecase: taskUsecase}
 }
 
+// func (tc *TaskController) CreateTask(c *gin.Context) {
+// 	var task domain.Task
+// 	if err := c.ShouldBindJSON(&task); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	task.CreaterID = c.GetString("username")
+// 	fmt.Println(task.CreaterID)
+
+// 	if err := tc.TaskUsecase.CreateTask(task); err != nil {
+// 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+// 		return
+// 	}
+
+// 	c.JSON(http.StatusOK, gin.H{"message": "task created successfully"})
+// }
 func (tc *TaskController) CreateTask(c *gin.Context) {
-	var task domain.Task
-	if err := c.ShouldBindJSON(&task); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
+    var task domain.Task
+    if err := c.ShouldBindJSON(&task); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
 
-	task.CreaterID = c.GetString("username")
-	fmt.Println(task.CreaterID)
+    task.CreaterID = c.GetString("username")
+    if err := tc.TaskUsecase.CreateTask(task); err != nil {
+        c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+        return
+    }
 
-	if err := tc.TaskUsecase.CreateTask(task); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"message": "task created successfully"})
+    c.JSON(http.StatusOK, gin.H{"message": "task created successfully"})
 }
+
 
 func (tc *TaskController) GetTasks(c *gin.Context) {
 	tasks, err := tc.TaskUsecase.GetTasks()
