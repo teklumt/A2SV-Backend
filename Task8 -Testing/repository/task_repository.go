@@ -11,10 +11,10 @@ import (
 )
 
 type TaskRepositoryImpl struct {
-	collection *mongo.Collection
+	collection mongo.Collection
 }
 
-func NewTaskRepositoryImpl(coll *mongo.Collection) domain.TaskRepository {
+func NewTaskRepositoryImpl(coll mongo.Collection) domain.TaskRepository {
 	return &TaskRepositoryImpl{
 		collection: coll,
 	}
