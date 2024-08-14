@@ -2,20 +2,36 @@ package repository
 
 import (
 	"clean_architecture_Testing/domain"
-	"clean_architecture_Testing/mocks"
+	"context"
 	"testing"
 
 	"github.com/stretchr/testify/suite"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type TaskRepositorySuite struct {
 	suite.Suite
-	mockRepo *mocks.TaskRepository
+	client     *mongo.Client
+	collection *mongo.Collection
+	repo       domain.TaskRepository
 }
 
 func (suite *TaskRepositorySuite) SetupTest() {
-	suite.mockRepo = new(mocks.TaskRepository)
+	// Initialize in-memory MongoDB
+	clientOptions := options.Client().ApplyURI("mongodb://localhost:27017")
+	client, err := mongo.Connect(context.Background(), clientOptions)
+	suite.NoError(err)
+
+	suite.client = client
+	suite.collection = client.Database("testdb").Collection("tasks")
+	suite.repo = NewTaskRepositoryImpl(*suite.collection)
+}
+
+func (suite *TaskRepositorySuite) TearDownTest() {
+	// Clean up
+	suite.client.Disconnect(context.Background())
 }
 
 func (suite *TaskRepositorySuite) TestCreateTask() {
@@ -26,127 +42,92 @@ func (suite *TaskRepositorySuite) TestCreateTask() {
 		CreaterID:   "user1",
 	}
 
-	suite.mockRepo.On("CreateTask", task).Return(task, nil)
-
-	result, err := suite.mockRepo.CreateTask(task)
-
+	result, err := suite.repo.CreateTask(task)
 	suite.NoError(err)
 	suite.Equal(task.Title, result.Title)
 	suite.Equal(task.Description, result.Description)
 	suite.Equal(task.Status, result.Status)
 	suite.Equal(task.CreaterID, result.CreaterID)
-
-	suite.mockRepo.AssertExpectations(suite.T())
 }
 
 func (suite *TaskRepositorySuite) TestGetTasks() {
-	tasks := []domain.Task{
-		{
-			ID:          primitive.NewObjectID(),
-			Title:       "Test Task 1",
-			Description: "Test Description 1",
-			Status:      "Pending",
-			CreaterID:   "user1",
-		},
-		{
-			ID:          primitive.NewObjectID(),
-			Title:       "Test Task 2",
-			Description: "Test Description 2",
-			Status:      "Completed",
-			CreaterID:   "user2",
-		},
+	// Add a task to the collection
+	task := domain.Task{
+		Title:       "Test Task",
+		Description: "Test Description",
+		Status:      "Pending",
+		CreaterID:   "user1",
 	}
-	suite.mockRepo.On("GetTasks").Return(tasks, nil)
-
-	result, err := suite.mockRepo.GetTasks()
+	_, err := suite.collection.InsertOne(context.Background(), task)
 	suite.NoError(err)
-	suite.Equal(tasks, result)
-	suite.mockRepo.AssertExpectations(suite.T())
+
+	tasks, err := suite.repo.GetTasks()
+	suite.NoError(err)
+	suite.Equal(task.Title, tasks[0].Title)
 }
 
 func (suite *TaskRepositorySuite) TestGetTaskByID() {
-	taskID := primitive.NewObjectID().Hex()
-	taskIDObj, err := primitive.ObjectIDFromHex(taskID)
-	if err != nil {
-		suite.T().Errorf("Error converting task ID: %v", err)
-		return
-	}
+	// Add a task to the collection
+	taskID := primitive.NewObjectID()
 	task := domain.Task{
-		ID:          taskIDObj,
+		ID:          taskID,
 		Title:       "Test Task",
 		Description: "Test Description",
 		Status:      "Pending",
 		CreaterID:   "user1",
 	}
-	suite.mockRepo.On("GetTaskByID", taskID, "user1", "user").Return(task, nil)
-
-	result, err := suite.mockRepo.GetTaskByID(taskID, "user1", "user")
+	_, err := suite.collection.InsertOne(context.Background(), task)
 	suite.NoError(err)
-	suite.Equal(task, result)
-	suite.mockRepo.AssertExpectations(suite.T())
-}
 
-func (suite *TaskRepositorySuite) TestGetMyTasks() {
-	username := "user1"
-	tasks := []domain.Task{
-		{
-			ID:          primitive.NewObjectID(),
-			Title:       "Test Task 1",
-			Description: "Test Description 1",
-			Status:      "Pending",
-			CreaterID:   username,
-		},
-	}
-	suite.mockRepo.On("GetMyTasks", username).Return(tasks, nil)
-
-	result, err := suite.mockRepo.GetMyTasks(username)
+	result, err := suite.repo.GetTaskByID(taskID.Hex(), "user1", "admin")
 	suite.NoError(err)
-	suite.Equal(tasks, result)
-	suite.mockRepo.AssertExpectations(suite.T())
+	suite.Equal(task.ID, result.ID)
+	suite.Equal(task.Title, result.Title)
 }
 
 func (suite *TaskRepositorySuite) TestDeleteTask() {
-	taskID := primitive.NewObjectID().Hex()
-	taskIDObj, err := primitive.ObjectIDFromHex(taskID)
-	if err != nil {
-		suite.T().Errorf("Error converting task ID: %v", err)
-		return
-	}
+	// Add a task to the collection
+	taskID := primitive.NewObjectID()
 	task := domain.Task{
-		ID:          taskIDObj,
+		ID:          taskID,
 		Title:       "Test Task",
 		Description: "Test Description",
 		Status:      "Pending",
 		CreaterID:   "user1",
 	}
-	suite.mockRepo.On("DeleteTask", taskID).Return(task, nil)
-
-	result, err := suite.mockRepo.DeleteTask(taskID)
+	_, err := suite.collection.InsertOne(context.Background(), task)
 	suite.NoError(err)
-	suite.Equal(task, result)
-	suite.mockRepo.AssertExpectations(suite.T())
+
+	deletedTask, err := suite.repo.DeleteTask(taskID.Hex())
+	suite.NoError(err)
+	suite.Equal(task.ID, deletedTask.ID)
 }
 
 func (suite *TaskRepositorySuite) TestUpdateTask() {
-	taskID := primitive.NewObjectID().Hex()
-	taskIDObj, err := primitive.ObjectIDFromHex(taskID)
-	if err != nil {
-		suite.T().Errorf("Error converting task ID: %v", err)
-		return
+	// Add a task to the collection
+	taskID := primitive.NewObjectID()
+	task := domain.Task{
+		ID:          taskID,
+		Title:       "Test Task",
+		Description: "Test Description",
+		Status:      "Pending",
+		CreaterID:   "user1",
 	}
+	_, err := suite.collection.InsertOne(context.Background(), task)
+	suite.NoError(err)
+
 	updatedTask := domain.Task{
-		ID:          taskIDObj,
+		ID:          taskID,
 		Title:       "Updated Task",
 		Description: "Updated Description",
 		Status:      "Completed",
 		CreaterID:   "user1",
 	}
-	suite.mockRepo.On("UpdateTask", taskID, updatedTask).Return(updatedTask, nil)
-
-	result, err := suite.mockRepo.UpdateTask(taskID, updatedTask)
+	result, err := suite.repo.UpdateTask(taskID.Hex(), updatedTask)
 	suite.NoError(err)
-	suite.Equal(updatedTask, result)
-	suite.mockRepo.AssertExpectations(suite.T())
+	suite.Equal(updatedTask.Title, result.Title)
+	suite.Equal(updatedTask.Description, result.Description)
+	suite.Equal(updatedTask.Status, result.Status)
 }
 
 func TestTaskRepositorySuite(t *testing.T) {
